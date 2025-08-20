@@ -44,7 +44,8 @@ void TCPClient::Init(int core_index)
 {
     tcp_open_status = false;
     SetThreadState(true);
-    th = std::thread(&TCPClient::InitProcess, this, core_index);
+    th = std::thread(&TCPClient::InitProcess,
+                     this, core_index);
 }
 
 void TCPClient::InitProcess(int core_index)
@@ -53,7 +54,7 @@ void TCPClient::InitProcess(int core_index)
     CPU_ZERO(&cpu);
     CPU_SET(core_index, &cpu);
 
-    if (sched_setaffinity(syscall(SYS_gettid), sizeof(cpu),&cpu) == -1)
+    if (sched_setaffinity(syscall(SYS_gettid), sizeof(cpu), &cpu) == -1)
         std::cout << "Core Error!" << std::endl;
 
     Shared::tcp_comm.SetIPAddress("127.0.0.1");
@@ -83,7 +84,8 @@ void TCPClient::InitProcess(int core_index)
 void TCPClient::Receiver(int core_index)
 {
     SetThreadState(true);
-    th = std::thread(&TCPClient::ReceiverProcess, this, core_index);
+    th = std::thread(&TCPClient::ReceiverProcess,
+                     this, core_index);
 }
 
 void TCPClient::ReceiverProcess(int core_index)
@@ -92,7 +94,7 @@ void TCPClient::ReceiverProcess(int core_index)
     CPU_ZERO(&cpu);
     CPU_SET(core_index, &cpu);
 
-    if (sched_setaffinity(syscall(SYS_gettid), sizeof(cpu),&cpu) == -1)
+    if (sched_setaffinity(syscall(SYS_gettid), sizeof(cpu), &cpu) == -1)
         std::cout << "Core Error!" << std::endl;
 
     for (;;) {
@@ -101,7 +103,8 @@ void TCPClient::ReceiverProcess(int core_index)
         if (GetThreadState()) {
             std::vector<unsigned char> receiver_list = Shared::tcp_comm.Receive(receiver_length);
             if (receiver_list.size() == receiver_length) {
-                if(!Shared::tcp_comm.ErrorControl(receiver_list)) {
+
+                if (!Shared::tcp_comm.ErrorControl(receiver_list)) {
                     Shared::tcp_data.SetValue1(static_cast<int>(receiver_list.at(0)));
                     Shared::tcp_data.SetValue2(static_cast<int>(receiver_list.at(1)));
                     std::cout << "Data1 = " << Shared::tcp_data.GetValue1() << std::endl;
@@ -109,6 +112,7 @@ void TCPClient::ReceiverProcess(int core_index)
                 } else {
                     std::this_thread::sleep_for(std::chrono::milliseconds(1200));
                 }
+
             }
         } else {
             break;
@@ -121,7 +125,8 @@ void TCPClient::ReceiverProcess(int core_index)
 void TCPClient::Sender(int core_index)
 {
     SetThreadState(true);
-    th = std::thread(&TCPClient::SenderProcess, this, core_index);
+    th = std::thread(&TCPClient::SenderProcess,
+                     this, core_index);
 }
 
 void TCPClient::SenderProcess(int core_index)
@@ -133,8 +138,7 @@ void TCPClient::SenderProcess(int core_index)
     if (sched_setaffinity(syscall(SYS_gettid),sizeof(cpu),&cpu) == -1)
         std::cout << "Core Error!" << std::endl;
 
-    for(;;)
-    {
+    for (;;) {
         std::lock_guard<std::mutex> grd(mtx);
 
         if (GetThreadState()) {

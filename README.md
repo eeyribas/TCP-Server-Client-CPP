@@ -1,3 +1,9 @@
 # TCP-Server-Client-CPP
-The repo contains TCP communication Client and Server applications. The applications are coded in the C++ programming language, using C-based libraries. 
-IDEs that compile C/C++ programming languages can be used. QT IDE was used while coding the applications in the repo.
+Contains Client and Server applications using TCP communication. 
+Data is sent to the client application through the interface of the server application.
+
+- Programming Language: C++ Programming Language
+
+- Framework: Qt5 (Version: Qt 5.11.3)
+
+- IDE: Qt Creator 4.8.2

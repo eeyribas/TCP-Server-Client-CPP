@@ -5,9 +5,6 @@
 #include <thread>
 #include <mutex>
 #include <chrono>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <sys/syscall.h>
 #include "tcpclient.h"
 #include "shared.h"
 

@@ -7,8 +7,8 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    Communication* communication = new Communication();
-    communication->Start(1);
+    Communication *comm = new Communication();
+    comm->Start(1);
 
     MainWindow w;
     w.show();

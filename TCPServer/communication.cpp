@@ -1,8 +1,10 @@
 #include "communication.h"
+#include <sys/syscall.h>
 
 void Communication::Start(int core_index)
 {
-    th = std::thread(&Communication::Process, this, core_index);
+    th = std::thread(&Communication::Process,
+                     this, core_index);
 }
 
 void Communication::Process(int core_index)

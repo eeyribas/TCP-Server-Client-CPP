@@ -6,12 +6,6 @@
 #include <mutex>
 #include <chrono>
 #include <unistd.h>
-#include <sys/ioctl.h>
-#include <sys/syscall.h>
-#include <sys/statvfs.h>
-#include <net/if.h>
-#include <arpa/inet.h>
-#include <errno.h>
 #include "shared.h"
 
 class TCPClient
@@ -41,7 +35,7 @@ private:
     bool conn_status;
     bool tcp_open_status;
     uint16_t port_no;
-    const char* host_name;
+    const char *host_name;
     uint receiver_length;
 };
 

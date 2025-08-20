@@ -1,5 +1,11 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <sys/ioctl.h>
+#include <sys/syscall.h>
+#include <sys/statvfs.h>
+#include <net/if.h>
+#include <arpa/inet.h>
+#include <errno.h>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -22,7 +28,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::Start(int core_index)
 {
-    th = std::thread(&MainWindow::Process, this, core_index);
+    th = std::thread(&MainWindow::Process,
+                     this, core_index);
 }
 
 void MainWindow::Process(int core_index)

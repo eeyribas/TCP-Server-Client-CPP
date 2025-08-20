@@ -1,4 +1,8 @@
 #include "tcpcomm.h"
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <stdlib.h>
+#include <netdb.h>
 
 bool TCPComm::Open(uint16_t port_no)
 {
@@ -8,7 +12,7 @@ bool TCPComm::Open(uint16_t port_no)
     sin_server.sin_family = AF_INET;
     sin_server.sin_port = htons(port_no);
     sin_server.sin_addr.s_addr = htonl(INADDR_ANY);
-    bind(server_socket, (struct sockaddr *)&sin_server, sizeof(sin_server));
+    bind(server_socket, (struct sockaddr*)&sin_server, sizeof(sin_server));
     listen(server_socket, 3);
 
     return true;
@@ -18,7 +22,7 @@ bool TCPComm::Connection()
 {
     struct sockaddr_in client;
     int client_len = sizeof(client);
-    sock = accept(server_socket, (struct sockaddr *)&client, (socklen_t*)&client_len);
+    sock = accept(server_socket, (struct sockaddr*)&client, (socklen_t*)&client_len);
     if (sock < 0)
         return false;
 
@@ -66,7 +70,7 @@ std::vector<unsigned char> TCPComm::Receive(uint receive_size)
             std::this_thread::sleep_for(std::chrono::seconds(1));
             Close();
             data = ErrorStatus(receive_size);
-        } else if(errno == EBADF) {
+        } else if (errno == EBADF) {
             std::this_thread::sleep_for(std::chrono::seconds(1));
             Close();
             data = ErrorStatus(receive_size);

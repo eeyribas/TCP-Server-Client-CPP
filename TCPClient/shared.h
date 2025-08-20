@@ -8,11 +8,13 @@
 class Shared
 {
 public:
+    static void SetTCPConnStatus(bool value);
+    static bool GetTCPConnStatus();
+
     static TCPComm tcp_comm;
+
     static std::vector<unsigned char> send_data;
     static std::vector<unsigned char> receive_data;
-    static void SetTCPIPConnStatus(bool value);
-    static bool GetTCPIPConnStatus();
     static TCPData tcp_data;
 
 private:

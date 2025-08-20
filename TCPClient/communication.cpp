@@ -1,8 +1,12 @@
 #include "communication.h"
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <sys/syscall.h>
 
 void Communication::Start(int core_index)
 {
-    th = std::thread(&Communication::Process, this, core_index);
+    th = std::thread(&Communication::Process,
+                     this, core_index);
 }
 
 void Communication::Process(int core_index)
@@ -11,10 +15,8 @@ void Communication::Process(int core_index)
     CPU_ZERO(&cpu);
     CPU_SET(core_index, &cpu);
 
-    if (sched_setaffinity(syscall(SYS_gettid),sizeof(cpu),&cpu) == -1)
+    if (sched_setaffinity(syscall(SYS_gettid), sizeof(cpu), &cpu) == -1)
         std::cout << "Core Error!" << std::endl;
-
-    bool start_conn_status = false;
 
     for (;;) {
         std::lock_guard<std::mutex> grd(mtx);

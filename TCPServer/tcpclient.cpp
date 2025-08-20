@@ -1,4 +1,10 @@
 #include "tcpclient.h"
+#include <sys/ioctl.h>
+#include <sys/syscall.h>
+#include <sys/statvfs.h>
+#include <net/if.h>
+#include <arpa/inet.h>
+#include <errno.h>
 
 TCPClient::TCPClient()
 {
@@ -45,7 +51,8 @@ void TCPClient::Stop()
 void TCPClient::Init(int core_index)
 {
     SetThreadState(true);
-    th = std::thread(&TCPClient::InitProcess, this, core_index);
+    th = std::thread(&TCPClient::InitProcess,
+                     this, core_index);
 }
 
 void TCPClient::InitProcess(int core_index)
@@ -87,7 +94,8 @@ void TCPClient::InitProcess(int core_index)
 void TCPClient::Receiver(int core_index)
 {
     SetThreadState(true);
-    th = std::thread(&TCPClient::ReceiverProcess, this, core_index);
+    th = std::thread(&TCPClient::ReceiverProcess,
+                     this, core_index);
 }
 
 void TCPClient::ReceiverProcess(int core_index)
@@ -127,7 +135,8 @@ void TCPClient::ReceiverProcess(int core_index)
 void TCPClient::Sender(int core_index)
 {
     SetThreadState(true);
-    th = std::thread(&TCPClient::SenderProcess, this, core_index);
+    th = std::thread(&TCPClient::SenderProcess,
+                     this, core_index);
 }
 
 void TCPClient::SenderProcess(int core_index)

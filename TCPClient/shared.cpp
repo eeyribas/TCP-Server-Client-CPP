@@ -6,12 +6,12 @@ std::vector<unsigned char> Shared::send_data;
 std::vector<unsigned char> Shared::receive_data;
 TCPData Shared::tcp_data;
 
-void Shared::SetTCPIPConnStatus(bool value)
+void Shared::SetTCPConnStatus(bool value)
 {
     tcp_conn_status = value;
 }
 
-bool Shared::GetTCPIPConnStatus()
+bool Shared::GetTCPConnStatus()
 {
     return tcp_conn_status;
 }

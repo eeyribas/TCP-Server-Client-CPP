@@ -1,4 +1,8 @@
 #include "tcpcomm.h"
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <stdlib.h>
+#include <netdb.h>
 
 bool TCPComm::Open()
 {
@@ -27,7 +31,7 @@ bool TCPComm::Connection()
     time.tv_usec = 100000;
     setsockopt(sock, SOL_SOCKET, SO_SNDTIMEO, (const char *)&time, sizeof (timeval));
 
-    if (connect(sock, (struct sockaddr *)&addr, sizeof(addr)) == -1)
+    if (connect(sock, (struct sockaddr*)&addr, sizeof(addr)) == -1)
         return false;
 
     return true;
@@ -82,7 +86,7 @@ std::vector<unsigned char> TCPComm::Receive(uint receive_size)
     if ((recv_count = recv(sock, &receive_data, receive_size, 0)) == -1) {
         if (errno == ECONNRESET)
             error_control = true;
-        else if(errno == EBADF)
+        else if (errno == EBADF)
             error_control = true;
     }
 
